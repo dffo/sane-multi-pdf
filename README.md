@@ -3,7 +3,7 @@ It can be a pain to scan PDF documents comprising multiple pages using a flatbed
 
 The purpose of this script is to provide an interactive command line environment for quickly scanning individual pages, and then concatenating them all into one big multipage document.
 
-Not only that, but it allows a user to preview scanned pages, redo a previous page if necessary, and add pages on thefly.
+Not only that, but it allows a user to preview scanned pages, redo a previous page if necessary, and add pages on the fly.
 
 This script uses pdfjam to concatenate the individual pdfs.
 
