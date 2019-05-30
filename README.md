@@ -1,9 +1,15 @@
 # sane-multi-pdf
-For bed scanners using SANE; command line tool that scans multiple pdfs and concatenates them into a multipage file.
-This script uses pdfjam to concatenate the individual pdfs into one big multipage document.
+It can be a pain to scan PDF documents comprising multiple pages using a flatbed scanner; not only does each page need to be scanned individually, but after that they need to be merged in the correct order into one large file, usually through the use of an external program. 
+
+The purpose of this script is to provide an interactive command line environment for quickly scanning individual pages, and then concatenating them all into one big multipage document.
+
+Not only that, but it allows a user to preview scanned pages, redo a previous page if necessary, and add pages on thefly.
+
+This script uses pdfjam to concatenate the individual pdfs.
 
 Requires libsane and a scanner that can be operated with it.
-[pdfjam](https://warwick.ac.uk/fac/sci/statistics/staff/academic-research/firth/software/pdfjam/) requires LaTeX.
+Depends on pdfjam for pdf concatenation (see [here](https://warwick.ac.uk/fac/sci/statistics/staff/academic-research/firth/software/pdfjam/) for installation info). pdfjam requires LaTeX to be installed.
+
 Also requires ImageMagick to convert the scanned png files to pdf (SANE only scans to image).
 
 This is a shell script; to run it simply make the file executable.
@@ -15,5 +21,8 @@ After the script has scanned a page, it will present a prompt from which command
 * "r" will redo the previously scanned page
 * "a" will add a page to the number of pages specified
 * "f" will finish the job and concatenate whatever pages it has already scanned
+* Once you are satisfied with the scanned page, just press enter to move on to the next page.
+
+Once all the pages have been scanned and converted, they will be concatenated into a pdf and placed in the default directory with the specified name.
 
 This script is mostly complete but is still a WIP.
