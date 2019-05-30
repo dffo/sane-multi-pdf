@@ -3,6 +3,7 @@
 usage()
 {
 	echo "Usage: $(basename $0) [ -o \"filename.pdf\" ] [ -n <number of pages> ]"
+	echo "Use $(basename $0) -h for optional arguments"
 	exit 1
 }
 
@@ -20,7 +21,7 @@ tmp_dir="/tmp/sane-multi-pdf/"
 ind=0
 profile_path="$config/sane-multi-pdf/default_profile"
 
-while getopts ":n:o:ix:y:" arg; do
+while getopts ":n:o:ihx:y:s:" arg; do
 	case "${arg}" in
 
 		n) #number of pages
@@ -45,7 +46,10 @@ while getopts ":n:o:ix:y:" arg; do
 			;;
 
 		h) #help
-			usage
+			echo "Usage: $(basename $0) [ -o \"filename.pdf\" ] [ -n <number of pages> ]"
+			echo Use -i to preserve individual page pdfs 
+			echo Use -x \<width\>, -y \<height\>\ for custom dimensions\; all units in mm
+			echo Use -s \<c\|g\|l\> for custom page style \(color, gray, lineart\)
 			exit 1
 			;;
 		x)
@@ -70,6 +74,22 @@ while getopts ":n:o:ix:y:" arg; do
 			elif [ "$y" -lt 0 ]
 			then
 				echo y cannot be less than 0
+				exit 1
+			fi
+			;;
+		s)
+			arg=${OPTARG}
+			if [ "$arg" = "c" ] || [ "$arg" = "C" ]
+			then
+				pg_style="Color"
+			elif [ "$arg" = "g" ] || [ "$arg" = "G" ]
+			then
+				pg_style="Gray"
+			elif [ "$arg" = "l" ] || [ "$arg" = "L" ]
+			then
+				pg_style="Lineart"
+			else
+				echo Valid style arguments: c, g, l \(color, gray, lineart\)
 				exit 1
 			fi
 			;;
@@ -118,14 +138,14 @@ then
 	read -p "Enter program name: " pdf_prog
 	if [ "$pdf_prog" = "" ]
 	then
-		echo skipping step
+		echo Skipping step
 		echo >> $conf_path
 	elif ! [ -x "$(command -v $pdf_prog)" ]
 	then
-		echo invalid program\; skipping
+		echo Invalid program\; skipping
 		echo >> $conf_path
 	else
-		echo default program set
+		echo Default program set
 		echo $pdf_prog >> $conf_path
 	fi
 fi
@@ -199,9 +219,12 @@ then
 	y=$(awk 'NR==3' $profile_path)
 fi
 
-style=$(awk 'NR==1' $profile_path)
+if [ -z "$pg_style" ]
+then
+	pg_style=$(awk 'NR==1' $profile_path)
+fi
 
-scanstring="--device $scanner --mode $style --resolution 300 -x $x -y $y"
+scanstring="--device $scanner --mode $pg_style --resolution 300 -x $x -y $y"
 
 if [ -f "$output" ]
 then
