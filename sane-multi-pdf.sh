@@ -1,11 +1,28 @@
 #!/bin/bash
 
+file_list=""
+tmp_dir="/tmp/sane-multi-pdf/"
+ind=0
+orient="p"
+
 usage()
 {
 	echo "Usage: $(basename $0) [ -o \"filename.pdf\" ] [ -n <number of pages> ]"
 	echo "Use $(basename $0) -h for optional arguments"
 	exit 1
 }
+
+int_exit()
+{
+	echo Interrupt signal recieved, cleaning up...
+	if [ -d $tmp_dir ]
+	then
+		rm -r $tmp_dir
+	fi
+	exit 9
+}
+
+trap int_exit SIGINT
 
 if [ -z "$XDG_CONFIG_HOME" ]
 then
@@ -14,11 +31,7 @@ else
 	config=$XDG_CONFIG_HOME
 fi
 
-orient="p"
 conf_path="$config/sane-multi-pdf/config"
-file_list=""
-tmp_dir="/tmp/sane-multi-pdf/"
-ind=0
 profile_path="$config/sane-multi-pdf/default_profile"
 
 while getopts ":n:o:ihx:y:s:" arg; do
