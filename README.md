@@ -5,12 +5,16 @@ The purpose of this script is to provide an interactive command line environment
 
 Not only that, but it allows a user to preview scanned pages, redo a previous page if necessary, and add pages on the fly.
 
-This script uses pdfjam to concatenate the individual pdfs.
+Requires:
+* libsane
+* pdfjam
+* ImageMagick
 
-Requires libsane and a scanner that can be operated with it.
-Depends on pdfjam for pdf concatenation (see [here](https://warwick.ac.uk/fac/sci/statistics/staff/academic-research/firth/software/pdfjam/) for installation info). pdfjam requires LaTeX to be installed.
+You'll need to know your SANE device name when setting up. If you don't know it, use ``scanimage -L`` to list compatible devices and their SANE names.
 
-Also requires ImageMagick to convert the scanned png files to pdf (SANE only scans to image).
+The script depends on pdfjam for pdf concatenation (see [here](https://warwick.ac.uk/fac/sci/statistics/staff/academic-research/firth/software/pdfjam/) for installation info). pdfjam requires LaTeX to be installed.
+
+Requires ImageMagick to ``convert`` the scanned png files to pdf (SANE only scans to image).
 
 This is a shell script; to run it simply make the file executable.
 When first run, the script will generate a config file with the output directory, the scanner device and the pdf viewer program with which to preview files. It will also create a file that specifies the default dimensions of the documents to be scanned and the style (color, grayscale, lineart).
@@ -24,5 +28,3 @@ After the script has scanned a page, it will present a prompt from which command
 * Once you are satisfied with the scanned page, just press enter to move on to the next page.
 
 Once all the pages have been scanned and converted, they will be concatenated into a pdf and placed in the default directory with the specified name.
-
-This script is mostly complete but is still a WIP.
