@@ -7,7 +7,7 @@ Not only that, but it allows a user to preview scanned pages, redo a previous pa
 
 Requires:
 * libsane
-* pdfjam
+* pdfjam (specifically the ``pdfjoin`` script that comes with it)
 * ImageMagick
 
 You'll need to know your SANE device name when setting up. If you don't know it, use ``scanimage -L`` to list compatible devices and their SANE names.
