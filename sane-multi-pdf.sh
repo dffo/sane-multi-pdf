@@ -121,7 +121,7 @@ then
 fi
 
 #check for a config file 
-#if it don't exist, ask for a device URI and put it in a new config file
+#if it don't exist, ask for a sane device name and put it in a new config file
 
 if [ ! -f "$conf_path" ]
 then
@@ -132,9 +132,9 @@ then
 	else
 		echo No config file found
 	fi
-	#the config file will just contain the URI of the preferred scan device
-	echo Setting up config file\; please enter URI of preferred scanner
-	read -p "Enter URI: " scanner
+	#the config file will just contain the name of the preferred scan device
+	echo Setting up config file\; please enter SANE device name of preferred scanner
+	read -p "Enter SANE name: " scanner
 	touch $conf_path 
 	echo $scanner>$conf_path
 	echo Enter the default location for the scanned pdf
@@ -161,6 +161,7 @@ then
 		echo Default program set
 		echo $pdf_prog >> $conf_path
 	fi
+	chmod 444 $conf_path
 fi
 
 if [ ! -f "$profile_path" ]
@@ -216,6 +217,7 @@ then
 		done
 	fi
 	echo Dimensions set.
+	chmod 444 $profile_path
 fi
 
 scanner=$(awk 'NR==1' $conf_path)
