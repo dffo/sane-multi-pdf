@@ -34,7 +34,7 @@ fi
 conf_path="$config/sane-multi-pdf/config"
 profile_path="$config/sane-multi-pdf/default_profile"
 
-while getopts ":n:o:ihx:y:s:" arg; do
+while getopts ":n:o:ihx:y:s:r:" arg; do
 	case "${arg}" in
 
 		n) #number of pages
@@ -63,6 +63,7 @@ while getopts ":n:o:ihx:y:s:" arg; do
 			echo Use -i to preserve individual page pdfs 
 			echo Use -x \<width\>, -y \<height\>\ for custom dimensions\; all units in mm
 			echo Use -s \<c\|g\|l\> for custom page style \(color, gray, lineart\)
+			echo Use -r \<c\|p\|a\> to reset \<config, profile, all \(both\)\>
 			exit 1
 			;;
 		x)
@@ -103,6 +104,25 @@ while getopts ":n:o:ihx:y:s:" arg; do
 				pg_style="Lineart"
 			else
 				echo Valid style arguments: c, g, l \(color, gray, lineart\)
+				exit 1
+			fi
+			;;
+		r)
+			reset=${OPTARG}
+			if [ "$reset" = "c" ]
+			then
+				echo resetting config file
+				rm -f $conf_path
+			elif [ "$reset" = "p" ]
+			then
+				echo resetting profile file
+				rm -f $profile_path
+			elif [ "$reset" = "a" ]
+			then
+				echo resetting both config and profile file
+				rm -f $conf_path $profile_path
+			else
+				echo Valid reset arguments: c, p, a \(config, profile, both\)
 				exit 1
 			fi
 			;;
